@@ -185,4 +185,15 @@ public class ConsoleTest {
         //Assert
         assertEquals(expectedOutPut, outContent.toString());
     }
+
+    @Test
+    public void Should_Pass_Invoking_Main_With_File_Name() {
+        //Arrange
+        String expectedOutPut = "Alex: 42 miles @ 34 mph\nDan: 39 miles @ 47 mph\nBob: 0 miles\n";
+        //Act
+
+        Console.main(new String[]{"/Users/rahuljanagouda/Desktop/RootAssignmentOne/input.txt"});
+        //Assert
+        assertEquals(expectedOutPut, outContent.toString());
+    }
 }
