@@ -11,7 +11,8 @@ public class Driver {
 
     // These variables are used to enhance the performance while calculating Average Speed.
     // Instead of iterating through all the trips and calculating it is better to compute
-    // these when adding a new trip.
+    // these when adding a new trip. This might not make a difference for small inputs but
+    // surely this will play a major role when the input size is huge.
     private Float totalJourneyTimeInHour;
     private Float totalJourneyDistanceInMiles;
 
@@ -57,5 +58,28 @@ public class Driver {
 
     public void setTotalJourneyDistanceInMiles(Float totalJourneyDistanceInMiles) {
         this.totalJourneyDistanceInMiles = totalJourneyDistanceInMiles;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        int roundedMilesPerHour = Math.round(getTotalJourneyDistanceInMiles() / getTotalJourneyTimeInHour());
+
+        if (roundedMilesPerHour > 5 && roundedMilesPerHour < 100) {
+            stringBuilder
+                    .append(getDriverName())
+                    .append(": ")
+                    .append(Math.round(getTotalJourneyDistanceInMiles()))
+                    .append(" miles @ ")
+                    .append(roundedMilesPerHour)
+                    .append(" mph");
+        } else {
+            stringBuilder
+                    .append(getDriverName())
+                    .append(": ")
+                    .append(Math.round(getTotalJourneyDistanceInMiles()))
+                    .append(" miles");
+        }
+        return stringBuilder.toString();
     }
 }

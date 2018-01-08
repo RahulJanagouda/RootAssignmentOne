@@ -43,24 +43,8 @@ public class Console {
     }
 
     public void printReport() {
-        driverDatabase = SortUtils.sortDatabase(driverDatabase);
-        for (Map.Entry<String, Driver> driver :
-                getDataBase().entrySet()) {
-            int roundedDistanceInMiles = Math.round(driver.getValue().getTotalJourneyDistanceInMiles());
-            int roundedMilesPerHour = Math.round(driver.getValue().getTotalJourneyDistanceInMiles() / driver.getValue().getTotalJourneyTimeInHour());
-
-            if (roundedMilesPerHour > 5 && roundedMilesPerHour < 100 && roundedDistanceInMiles > 0) {
-                System.out.println(
-                        driver.getKey()
-                                + ": "
-                                + roundedDistanceInMiles
-                                + " miles @ "
-                                + roundedMilesPerHour
-                                + " mph"
-                );
-            } else if (roundedDistanceInMiles == 0) {
-                System.out.println(driver.getKey() + ": 0 miles");
-            }
+        for (Map.Entry<String, Driver> driver : SortUtils.sortDatabase(driverDatabase).entrySet()) {
+            System.out.println(driver.getValue().toString());
         }
 
     }
