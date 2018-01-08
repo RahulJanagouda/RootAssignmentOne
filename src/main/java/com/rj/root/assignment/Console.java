@@ -3,8 +3,10 @@ package com.rj.root.assignment;
 import com.rj.root.assignment.exceptions.DriverNotFoundException;
 import com.rj.root.assignment.exceptions.UnknownCommandException;
 import com.rj.root.assignment.model.Driver;
+import com.rj.root.assignment.utils.SortUtils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Console {
     private HashMap<String, Driver> driverDatabase = new HashMap<>();
@@ -38,5 +40,28 @@ public class Console {
 
     public HashMap<String, Driver> getDataBase() {
         return driverDatabase;
+    }
+
+    public void printReport() {
+        driverDatabase = SortUtils.sortDatabase(driverDatabase);
+        for (Map.Entry<String, Driver> driver :
+                getDataBase().entrySet()) {
+            int roundedDistanceInMiles = Math.round(driver.getValue().getTotalJourneyDistanceInMiles());
+            int roundedMilesPerHour = Math.round(driver.getValue().getTotalJourneyDistanceInMiles() / driver.getValue().getTotalJourneyTimeInHour());
+
+            if (roundedMilesPerHour > 5 && roundedMilesPerHour < 100 && roundedDistanceInMiles > 0) {
+                System.out.println(
+                        driver.getKey()
+                                + ": "
+                                + roundedDistanceInMiles
+                                + " miles @ "
+                                + roundedMilesPerHour
+                                + " mph"
+                );
+            } else if (roundedDistanceInMiles == 0) {
+                System.out.println(driver.getKey() + ": 0 miles");
+            }
+        }
+
     }
 }
