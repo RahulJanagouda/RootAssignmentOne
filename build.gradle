@@ -28,3 +28,6 @@ dependencies {
     compile group: 'joda-time', name: 'joda-time', version: '2.3'
 
 }
+
+jacocoTestCoverageVerification.dependsOn(jacocoTestReport)
+jacocoTestReport.dependsOn(test)
