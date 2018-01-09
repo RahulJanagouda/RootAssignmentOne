@@ -1,6 +1,7 @@
 package com.rj.root.assignment;
 
 import com.rj.root.assignment.exceptions.DriverNotFoundException;
+import com.rj.root.assignment.exceptions.FileNameNotGivenException;
 import com.rj.root.assignment.exceptions.UnknownCommandException;
 import com.rj.root.assignment.model.Driver;
 import com.rj.root.assignment.utils.SortUtils;
@@ -14,19 +15,24 @@ import java.util.Scanner;
 public class Console {
     private HashMap<String, Driver> driverDatabase = new HashMap<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNameNotGivenException, FileNotFoundException {
         Console console = new Console();
         Scanner scanner = null;
+
+        if (args[0] == null || args[0].equals("")) {
+            throw new FileNameNotGivenException("Please mention a file as an input.");
+        }
+
         try {
             scanner = new Scanner(new FileReader(args[0]));
-
             while (scanner.hasNext())
                 console.parseCommand(scanner.nextLine());
             console.printReport();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("The given file does not exist.");
+            throw e;
         } finally {
-            assert scanner != null;
+            if (scanner != null)
             scanner.close();
         }
     }

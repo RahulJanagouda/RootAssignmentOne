@@ -1,6 +1,7 @@
 package com.rj.root.assignment;
 
 import com.rj.root.assignment.exceptions.DriverNotFoundException;
+import com.rj.root.assignment.exceptions.FileNameNotGivenException;
 import com.rj.root.assignment.exceptions.UnknownCommandException;
 import com.rj.root.assignment.model.Driver;
 import org.junit.After;
@@ -8,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.HashMap;
 
@@ -16,15 +18,17 @@ import static org.junit.Assert.assertTrue;
 
 public class ConsoleTest {
 
+    private Console console;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
     @Before
-    public void setUpStreams() {
+    public void setUpStreams() throws Exception {
+        console = new Console();
         System.setOut(new PrintStream(outContent));
     }
 
     @After
-    public void cleanUpStreams() {
+    public void cleanUpStreams() throws Exception {
         System.setOut(null);
     }
 
@@ -37,9 +41,8 @@ public class ConsoleTest {
     }
 
     @Test
-    public void Should_Pass_Initially_DataBaseSizeIsEmpty() {
+    public void Should_Pass_Initially_DataBaseSizeIsEmpty() throws Exception {
         //Arrange
-        Console console = new Console();
 
         //Act
         boolean isDatabaseEmpty = console.getDataBase().isEmpty();
@@ -52,21 +55,22 @@ public class ConsoleTest {
     @Test
     public void Should_Pass_When_parseCommand_AddOneDriver() throws Exception {
         //Arrange
-        Console console = new Console();
+        int expectedDatabaseSize = 1;
+        String expectedDriverName = "Dan";
 
         //Act
         console.parseCommand("Driver Dan");
 
         //Assert
         HashMap<String, Driver> database = console.getDataBase();
-        assertEquals(1, database.size());
-        assertEquals("Dan", database.get("Dan").getDriverName());
+        assertEquals(expectedDatabaseSize, database.size());
+        String key = database.keySet().toArray(new String[0])[0];
+        assertEquals(expectedDriverName, database.get(key).getDriverName());
     }
 
     @Test(expected = UnknownCommandException.class)
     public void Should_Throw_When_parseCommand_RandomText() throws Exception {
         //Arrange
-        Console console = new Console();
 
         //Act
         console.parseCommand("Hello Dan");
@@ -77,7 +81,10 @@ public class ConsoleTest {
     @Test
     public void Should_Pass_When_parseCommand_AddTwoDriver() throws Exception {
         //Arrange
-        Console console = new Console();
+        int expectedDatabaseSize = 2;
+        String expectedDriverName_1 = "Dan";
+        String expectedDriverName_2 = "Alex";
+
 
         //Act
         console.parseCommand("Driver Dan");
@@ -85,15 +92,21 @@ public class ConsoleTest {
 
         //Assert
         HashMap<String, Driver> database = console.getDataBase();
-        assertEquals(2, database.size());
-        assertEquals("Dan", database.get("Dan").getDriverName());
-        assertEquals("Alex", database.get("Alex").getDriverName());
+        assertEquals(expectedDatabaseSize, database.size());
+
+        String key_1 = database.keySet().toArray(new String[0])[0];
+        assertEquals(expectedDriverName_1, database.get(key_1).getDriverName());
+
+        String key_2 = database.keySet().toArray(new String[1])[1];
+        assertEquals(expectedDriverName_2, database.get(key_2).getDriverName());
     }
 
     @Test
     public void Should_Pass_When_parseCommand_AddOneDriver_And_OneTrip() throws Exception {
         //Arrange
-        Console console = new Console();
+        int expectedDatabaseSize = 1;
+        String expectedDriverName = "Dan";
+        int expectedTripsSize = 1;
 
         //Act
         console.parseCommand("Driver Dan");
@@ -101,15 +114,14 @@ public class ConsoleTest {
 
         //Assert
         HashMap<String, Driver> database = console.getDataBase();
-        assertEquals(1, database.size());
-        assertEquals("Dan", database.keySet().toArray()[0]);
-        assertEquals(1, database.get("Dan").getDriverTrips().size());
+        assertEquals(expectedDatabaseSize, database.size());
+        assertEquals(expectedDriverName, database.keySet().toArray()[0]);
+        assertEquals(expectedTripsSize, database.get("Dan").getDriverTrips().size());
     }
 
     @Test(expected = DriverNotFoundException.class)
     public void Should_Throw_When_parseCommand_AddOneDriver_And_OneTripForAbsentDriver() throws Exception {
         //Arrange
-        Console console = new Console();
 
         //Act
         console.parseCommand("Driver Dan");
@@ -121,7 +133,9 @@ public class ConsoleTest {
     @Test
     public void Should_Pass_When_parseCommand_AddOneDriver_And_TwoTrips() throws Exception {
         //Arrange
-        Console console = new Console();
+        int expectedDatabaseSize = 1;
+        String expectedDriverName = "Dan";
+        int expectedTripsSize = 2;
 
         //Act
         console.parseCommand("Driver Dan");
@@ -130,16 +144,15 @@ public class ConsoleTest {
 
         //Assert
         HashMap<String, Driver> database = console.getDataBase();
-        assertEquals(1, database.size());
-        assertEquals("Dan", database.keySet().toArray()[0]);
-        assertEquals(2, database.get("Dan").getDriverTrips().size());
+        assertEquals(expectedDatabaseSize, database.size());
+        assertEquals(expectedDriverName, database.keySet().toArray()[0]);
+        assertEquals(expectedTripsSize, database.get("Dan").getDriverTrips().size());
     }
 
 
     @Test
-    public void Should_Pass_When_printReport_With_SingleDriver_And_SingleTrip() {
+    public void Should_Pass_When_printReport_With_SingleDriver_And_SingleTrip() throws Exception {
         //Arrange
-        Console console = new Console();
         String expectedOutPut = "Alex: 42 miles @ 34 mph\n";
 
         //Act
@@ -152,9 +165,8 @@ public class ConsoleTest {
     }
 
     @Test
-    public void Should_Pass_When_printReport_With_SingleDriver_And_MultipleTrips() {
+    public void Should_Pass_When_printReport_With_SingleDriver_And_MultipleTrips() throws Exception {
         //Arrange
-        Console console = new Console();
         String expectedOutPut = "Dan: 39 miles @ 47 mph\n";
 
         //Act
@@ -168,9 +180,8 @@ public class ConsoleTest {
     }
 
     @Test
-    public void Should_Pass_When_printReport_With_MultipleDriver_And_MultipleTrips() {
+    public void Should_Pass_When_printReport_With_MultipleDriver_And_MultipleTrips() throws Exception {
         //Arrange
-        Console console = new Console();
         String expectedOutPut = "Alex: 42 miles @ 34 mph\nDan: 39 miles @ 47 mph\nBob: 0 miles\n";
 
         //Act
@@ -187,13 +198,46 @@ public class ConsoleTest {
     }
 
     @Test
-    public void Should_Pass_Invoking_Main_With_File_Name() {
+    public void Should_Pass_Invoking_Main_With_File_Name() throws Exception {
         //Arrange
         String expectedOutPut = "Alex: 42 miles @ 34 mph\nDan: 39 miles @ 47 mph\nBob: 0 miles\n";
-        //Act
 
-        Console.main(new String[]{"/Users/rahuljanagouda/Desktop/RootAssignmentOne/input.txt"});
+        //Act
+        final String currentDir = System.getProperty("user.dir");
+        Console.main(new String[]{currentDir + "/input.txt"});
+
         //Assert
         assertEquals(expectedOutPut, outContent.toString());
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void Should_Throw_Invoking_Main_With_Absent_File_Name() throws Exception {
+        //Arrange
+
+        //Act
+        final String currentDir = System.getProperty("user.dir");
+        Console.main(new String[]{currentDir + "/fileNotFound.txt"});
+
+        //Assert
+    }
+
+    @Test(expected = FileNameNotGivenException.class)
+    public void Should_Throw_Invoking_Main_Without_Any_File_Name() throws Exception {
+        //Arrange
+
+        //Act
+        Console.main(new String[]{""});
+
+        //Assert
+    }
+
+    @Test(expected = FileNameNotGivenException.class)
+    public void Should_Throw_Invoking_Main_Without_Null_File_Name() throws Exception {
+        //Arrange
+
+        //Act
+        Console.main(new String[]{null});
+
+        //Assert
     }
 }

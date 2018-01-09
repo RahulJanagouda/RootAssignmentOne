@@ -28,7 +28,7 @@ public class Driver {
         return driverName;
     }
 
-    private void setDriverName(String driverName) {
+    public void setDriverName(String driverName) {
         this.driverName = driverName;
     }
 
