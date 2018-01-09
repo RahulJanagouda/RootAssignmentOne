@@ -29,7 +29,8 @@ public class Console {
                 console.parseCommand(scanner.nextLine());
             console.printReport();
         } catch (FileNotFoundException e) {
-            System.out.println("The given file does not exist.");
+            System.out.println("The given file does not exist at location:" + args[0]);
+            System.out.println("Please give absolute path to the file location");
             throw e;
         } finally {
             if (scanner != null)
