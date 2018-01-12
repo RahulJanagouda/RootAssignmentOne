@@ -1,9 +1,5 @@
 # RootAssignment
 
-Test Coverage
-
-
-
 ## Approach
 Broadly, I decided to approach this problem with the TDD.    
 I tried to follow Uncle bob's three rules of TDD whenever I can, which are.
