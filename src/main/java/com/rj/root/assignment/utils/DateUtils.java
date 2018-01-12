@@ -14,9 +14,13 @@ public class DateUtils {
                 .withMillisOfSecond(0);
     }
 
-    public static float differenceInHours(String startTime, String endTime) {
-        DateTime startDateTime = convertStringToDate(startTime);
+    public static float differenceInHours(String startTimeInString, String endTime) {
+        DateTime startDateTime = convertStringToDate(startTimeInString);
         DateTime endDateTime = convertStringToDate(endTime);
+        return Minutes.minutesBetween(startDateTime, endDateTime).getMinutes() / 60f;
+    }
+
+    public static float differenceInHours(DateTime startDateTime, DateTime endDateTime) {
         return Minutes.minutesBetween(startDateTime, endDateTime).getMinutes() / 60f;
     }
 }

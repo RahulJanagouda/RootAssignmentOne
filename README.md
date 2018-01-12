@@ -32,3 +32,11 @@ Joda for date manipulation
 
 ## How to execute
 java Console pathToFile
+
+## Assumptions
+
+By below statement, I assume that I should not include trips in the report whose average speed is less than 5 mph or greater than 100 mph. 
+
+```
+Discard any trips that average a speed of less than 5 mph or greater than 100 mph.
+```   

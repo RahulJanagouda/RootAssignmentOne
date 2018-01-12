@@ -7,11 +7,13 @@ public class Trip {
     private DateTime startTime;
     private DateTime endTime;
     private Float distanceInMiles;
+    private int roundedSpeed;
 
     Trip(String startTime, String endTime, String distanceInMiles) {
         setStartTime(DateUtils.convertStringToDate(startTime));
         setEndTime(DateUtils.convertStringToDate(endTime));
         setDistanceInMiles(Float.parseFloat(distanceInMiles));
+        setRoundedSpeed(Math.round(getDistanceInMiles() / DateUtils.differenceInHours(startTime, endTime)));
     }
 
     public DateTime getStartTime() {
@@ -37,4 +39,13 @@ public class Trip {
     public void setDistanceInMiles(Float distanceInMiles) {
         this.distanceInMiles = distanceInMiles;
     }
+
+    public int getRoundedSpeed() {
+        return roundedSpeed;
+    }
+
+    public void setRoundedSpeed(int roundedSpeed) {
+        this.roundedSpeed = roundedSpeed;
+    }
+
 }

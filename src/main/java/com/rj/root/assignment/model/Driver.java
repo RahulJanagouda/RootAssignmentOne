@@ -15,6 +15,7 @@ public class Driver {
     // surely this will play a major role when the input size is huge.
     private Float totalJourneyTimeInHour;
     private Float totalJourneyDistanceInMiles;
+    private int roundedAverageSpeed;
 
 
     public Driver(String driverName) {
@@ -37,11 +38,21 @@ public class Driver {
     }
 
     public void addTrip(String startTime, String endTime, String distanceInMiles) {
-        driverTrips.add(new Trip(startTime, endTime, distanceInMiles));
 
-        // pre calculate to for better performance
-        setTotalJourneyTimeInHour(getTotalJourneyTimeInHour() + DateUtils.differenceInHours(startTime, endTime));
-        setTotalJourneyDistanceInMiles(getTotalJourneyDistanceInMiles() + Float.parseFloat(distanceInMiles));
+        // After clarifying with Clara, it is understood that I should ignore trips with average speed of less than 5 mph or greater than 100 mph.
+        // "Discard any trips that average a speed of less than 5 mph or greater than 100 mph."
+        // Here is where we ignore the trips for the calculation.
+
+        Trip tripToInsert = new Trip(startTime, endTime, distanceInMiles);
+
+        if (tripToInsert.getRoundedSpeed() > 5 && tripToInsert.getRoundedSpeed() < 100) {
+            driverTrips.add(new Trip(startTime, endTime, distanceInMiles));
+
+            // This technique is to pre calculate every time a new trip is added which provides better performance for large data sets.
+
+            setTotalJourneyTimeInHour(getTotalJourneyTimeInHour() + DateUtils.differenceInHours(startTime, endTime));
+            setTotalJourneyDistanceInMiles(getTotalJourneyDistanceInMiles() + Float.parseFloat(distanceInMiles));
+        }
     }
 
     public Float getTotalJourneyTimeInHour() {
@@ -59,6 +70,15 @@ public class Driver {
     public void setTotalJourneyDistanceInMiles(Float totalJourneyDistanceInMiles) {
         this.totalJourneyDistanceInMiles = totalJourneyDistanceInMiles;
     }
+
+    public int getRoundedAverageSpeed() {
+        return roundedAverageSpeed;
+    }
+
+    public void setRoundedAverageSpeed(int roundedAverageSpeed) {
+        this.roundedAverageSpeed = roundedAverageSpeed;
+    }
+
 
     @Override
     public String toString() {

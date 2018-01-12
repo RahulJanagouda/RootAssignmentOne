@@ -60,4 +60,19 @@ public class TripTest {
         //Assert
         assertEquals(expectedDistanceInMiles, actualDistanceInMiles);
     }
+
+    @Test
+    public void Should_Pass_When_setters_And_getters_RoundedSpeed() throws Exception {
+        //Arrange
+        int expectedDistanceInMiles = 35;
+
+        //Act
+        Trip speedTrip = new Trip("07:15", "07:45", "17.3");
+        int actualDistanceInMiles = speedTrip.getRoundedSpeed();
+
+        //Assert
+        assertEquals(expectedDistanceInMiles, actualDistanceInMiles);
+    }
+
+
 }
