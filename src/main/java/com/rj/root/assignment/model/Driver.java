@@ -15,7 +15,6 @@ public class Driver {
     // surely this will play a major role when the input size is huge.
     private Float totalJourneyTimeInHour;
     private Float totalJourneyDistanceInMiles;
-    private int roundedAverageSpeed;
 
 
     public Driver(String driverName) {
@@ -29,7 +28,7 @@ public class Driver {
         return driverName;
     }
 
-    public void setDriverName(String driverName) {
+    void setDriverName(String driverName) {
         this.driverName = driverName;
     }
 
@@ -46,7 +45,7 @@ public class Driver {
         Trip tripToInsert = new Trip(startTime, endTime, distanceInMiles);
 
         if (tripToInsert.getRoundedSpeed() > 5 && tripToInsert.getRoundedSpeed() < 100) {
-            driverTrips.add(new Trip(startTime, endTime, distanceInMiles));
+            driverTrips.add(tripToInsert);
 
             // This technique is to pre calculate every time a new trip is added which provides better performance for large data sets.
 
@@ -55,11 +54,11 @@ public class Driver {
         }
     }
 
-    public Float getTotalJourneyTimeInHour() {
+    Float getTotalJourneyTimeInHour() {
         return totalJourneyTimeInHour;
     }
 
-    public void setTotalJourneyTimeInHour(Float totalJourneyTimeInHour) {
+    void setTotalJourneyTimeInHour(Float totalJourneyTimeInHour) {
         this.totalJourneyTimeInHour = totalJourneyTimeInHour;
     }
 
@@ -71,21 +70,12 @@ public class Driver {
         this.totalJourneyDistanceInMiles = totalJourneyDistanceInMiles;
     }
 
-    public int getRoundedAverageSpeed() {
-        return roundedAverageSpeed;
-    }
-
-    public void setRoundedAverageSpeed(int roundedAverageSpeed) {
-        this.roundedAverageSpeed = roundedAverageSpeed;
-    }
-
-
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         int roundedMilesPerHour = Math.round(getTotalJourneyDistanceInMiles() / getTotalJourneyTimeInHour());
 
-        if (roundedMilesPerHour > 5 && roundedMilesPerHour < 100) {
+        if (roundedMilesPerHour > 0) {
             stringBuilder
                     .append(getDriverName())
                     .append(": ")
@@ -102,4 +92,5 @@ public class Driver {
         }
         return stringBuilder.toString();
     }
+
 }

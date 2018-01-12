@@ -2,7 +2,7 @@ package com.rj.root.assignment;
 
 import com.rj.root.assignment.exceptions.DriverNotFoundException;
 import com.rj.root.assignment.exceptions.FileNameNotGivenException;
-import com.rj.root.assignment.exceptions.UnknownCommandException;
+import com.rj.root.assignment.exceptions.ImproperCommandException;
 import com.rj.root.assignment.model.Driver;
 import com.rj.root.assignment.utils.SortUtils;
 
@@ -34,18 +34,18 @@ public class Console {
             throw e;
         } finally {
             if (scanner != null)
-            scanner.close();
+                scanner.close();
         }
     }
 
-    public void parseCommand(String command) {
+    void parseCommand(String command) {
         if (command.startsWith("Driver")) {
             parseDriver(command.split(" ")[1]);
         } else if (command.startsWith("Trip")) {
             String[] tripCommand = command.split(" ");
             parseTrip(tripCommand[1], tripCommand[2], tripCommand[3], tripCommand[4]);
         } else {
-            throw new UnknownCommandException("Unknown Command: " + command);
+            throw new ImproperCommandException("Unknown Command: " + command);
         }
     }
 
@@ -61,11 +61,11 @@ public class Console {
         getDataBase().put(driverName, new Driver(driverName));
     }
 
-    public HashMap<String, Driver> getDataBase() {
+    HashMap<String, Driver> getDataBase() {
         return driverDatabase;
     }
 
-    public void printReport() {
+    void printReport() {
         for (Map.Entry<String, Driver> driver : SortUtils.sortDatabase(driverDatabase).entrySet()) {
             System.out.println(driver.getValue().toString());
         }

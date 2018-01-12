@@ -2,7 +2,7 @@ package com.rj.root.assignment;
 
 import com.rj.root.assignment.exceptions.DriverNotFoundException;
 import com.rj.root.assignment.exceptions.FileNameNotGivenException;
-import com.rj.root.assignment.exceptions.UnknownCommandException;
+import com.rj.root.assignment.exceptions.ImproperCommandException;
 import com.rj.root.assignment.model.Driver;
 import org.junit.After;
 import org.junit.Before;
@@ -68,7 +68,7 @@ public class ConsoleTest {
         assertEquals(expectedDriverName, database.get(key).getDriverName());
     }
 
-    @Test(expected = UnknownCommandException.class)
+    @Test(expected = ImproperCommandException.class)
     public void Should_Throw_When_parseCommand_RandomText() throws Exception {
         //Arrange
 
